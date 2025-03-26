@@ -13,5 +13,6 @@ router.get("/:id", checkUserExists, userController.getById);
 router.post("/", userController.create);
 router.put("/:id", isAuthenticated, checkUserExists, checkSelfAction, userController.update);
 router.delete("/:id", isAuthenticated, checkUserExists, checkSelfAction, userController.delete);
+router.put("/:id/avatar", isAuthenticated, checkUserExists, checkSelfAction, userController.uploadAvatar);
 
 export default router;

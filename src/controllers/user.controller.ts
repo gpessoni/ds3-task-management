@@ -55,7 +55,7 @@ class UserController {
   async update(req: Request, res: Response) {
     try {
       const { id } = req.params;
-      
+
       const validation = validateId(id);
       if (validation.error) {
         return handleError(res, new Error(validation.error), validation.message, 400);
@@ -105,6 +105,30 @@ class UserController {
       return handleError(res, error, "Erro ao realizar login");
     }
   }
+
+
+  async uploadAvatar(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+      const { avatar } = req.body;
+
+      const validation = validateId(id);
+      if (validation.error) {
+        return handleError(res, new Error(validation.error), validation.message, 400);
+      }
+
+      if (!avatar) {
+        return handleError(res, new Error("Avatar é obrigatório"), "Avatar é obrigatório", 400);
+      }
+
+      const updatedUser = await userService.update(Number(id), { avatar });
+      return res.json(updatedUser);
+    } catch (error) {
+      return handleError(res, error as Error, "Erro ao atualizar o avatar");
+    }
+  }
 }
+
+
 
 export default new UserController();

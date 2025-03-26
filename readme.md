@@ -33,8 +33,24 @@ src/
 - Prisma (ORM)
 - Zod e Joi (Validação)
 - Jest (Testes)
+- bcrypt (Criptografia de senhas)
+- jsonwebtoken (Autenticação)
+- cors (Segurança)
+- axios (Requisições HTTP)
 
 ## 🚀 Rotas Disponíveis
+
+### Tarefas
+- `GET /tasks` - Lista todas as tarefas
+- `GET /tasks/:id` - Obtém uma tarefa específica
+- `POST /tasks` - Cria uma nova tarefa (requer autenticação)
+- `PUT /tasks/:id` - Atualiza uma tarefa (requer autenticação)
+- `DELETE /tasks/:id` - Remove uma tarefa (requer autenticação)
+- `POST /tasks/:id/assign` - Atribui um responsável à tarefa (requer autenticação)
+- `GET /tasks/priority/:priorityId` - Lista tarefas por prioridade (requer autenticação)
+- `GET /tasks/responsible/:responsibleId` - Lista tarefas por responsável (requer autenticação)
+- `GET /tasks/creator/:creatorId` - Lista tarefas por criador (requer autenticação)
+- `GET /tasks/tag/:tagId` - Lista tarefas por tag (requer autenticação)
 
 ### Tags
 - `GET /tags` - Lista todas as tags

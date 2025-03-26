@@ -86,6 +86,7 @@ class UserService {
         id: true,
         name: true,
         email: true,
+        avatar: true,
         createdAt: true,
         updatedAt: true,
         tasks: {
@@ -93,7 +94,7 @@ class UserService {
             id: true,
             title: true,
             description: true,
-            completed: true,
+            status: true,
             priority: true,
             createdAt: true,
             updatedAt: true
@@ -104,7 +105,7 @@ class UserService {
             id: true,
             title: true, 
             description: true,
-            completed: true,
+            status: true,
             priority: true,
             createdAt: true,
             updatedAt: true
@@ -131,15 +132,16 @@ class UserService {
     return prisma.user.findMany({
       select: {
         id: true,
-        name: true,
+        name: true, 
         email: true,
+        avatar: true,
         createdAt: true,
         updatedAt: true
       }
     });
   }
 
-  async update(id: number, data: { name?: string, email?: string, password?: string }) {
+  async update(id: number, data: { name?: string, email?: string, password?: string, avatar?: string }) {
     if (data.email) {
       const existingUser = await prisma.user.findFirst({
         where: { 

@@ -19,7 +19,7 @@ class TagController {
         return handleError(res, new Error("Cor inválida"), "A cor deve estar no formato hexadecimal válido (ex: #FFFFFF ou #FFF)", 400);
       }
 
-      const tag = await tagService.create({ name, color }); 
+      const tag = await tagService.create({ name, color });
       return res.status(201).json(tag);
     } catch (error: any) {
       if (error.code === "TAG_EXISTS") {
@@ -61,7 +61,7 @@ class TagController {
   async update(req: Request, res: Response) {
     try {
       const { id } = req.params;
-      
+
       const validation = validateId(id);
       if (validation.error) {
         return handleError(res, new Error(validation.error), validation.message, 400);
@@ -103,6 +103,41 @@ class TagController {
       return handleError(res, error as Error, "Erro ao deletar a tag");
     }
   }
+
+  async addTagsToTask(req: Request, res: Response) {
+    try {
+      const { taskId } = req.params;
+      const { tagIds } = req.body;    
+
+      const validation = validateId(taskId);
+      if (validation.error) { 
+        return handleError(res, new Error(validation.error), validation.message, 400);
+      }
+
+      const task = await tagService.addTagsToTask(Number(taskId), tagIds);
+      return res.json(task);
+    } catch (error) {
+      return handleError(res, error as Error, "Erro ao adicionar tags a uma tarefa");
+    }
+  }
+
+  async removeTagsFromTask(req: Request, res: Response) {
+    try {
+      const { taskId } = req.params;
+      const { tagIds } = req.body;
+
+      const validation = validateId(taskId);    
+      if (validation.error) { 
+        return handleError(res, new Error(validation.error), validation.message, 400);
+      }
+
+      const task = await tagService.removeTagsFromTask(Number(taskId), tagIds);
+      return res.json(task);
+    } catch (error) {
+      return handleError(res, error as Error, "Erro ao remover tags de uma tarefa");
+    }
+  }
 }
+
 
 export default new TagController();

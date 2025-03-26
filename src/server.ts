@@ -3,6 +3,7 @@ import cors from "cors";
 import priorityRoutes from "./routes/priority.routes";
 import tagsRoutes from "./routes/tag.routes"
 import userRoutes from "./routes/user.routes"
+import taskRoutes from "./routes/task.routes"
 
 
 const app = express();
@@ -14,6 +15,7 @@ app.use(express.json());
 app.use("/priorities", priorityRoutes);
 app.use("/tags", tagsRoutes)
 app.use("/users", userRoutes)
+app.use("/tasks", taskRoutes)
 
 if (process.env.NODE_ENV !== "test") {
   app.listen(port, () => {

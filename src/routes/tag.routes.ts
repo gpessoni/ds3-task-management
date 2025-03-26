@@ -10,6 +10,8 @@ router.get("/", isAuthenticated, tagController.getAll);
 router.get("/:id", isAuthenticated, checkTagExists, tagController.getById);
 router.put("/:id", isAuthenticated, checkTagExists, tagController.update);
 router.delete("/:id", isAuthenticated, checkTagExists, tagController.delete);
+router.post("/:taskId/tags", isAuthenticated, checkTagExists, tagController.addTagsToTask);
+router.delete("/:taskId/tags", isAuthenticated, checkTagExists, tagController.removeTagsFromTask);
 
 export default router;
 

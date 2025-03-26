@@ -77,10 +77,10 @@ class TagService {
 
   async getById(id: number) {
     return prisma.tag.findUnique({
-      where: { id }, 
+      where: { id },
     });
   }
-  
+
   async getAll() {
     return prisma.tag.findMany();
   }
@@ -106,7 +106,7 @@ class TagService {
 
   async update(id: number, name: string, color: string) {
     const existingTag = await prisma.tag.findFirst({
-      where: { 
+      where: {
         name,
         id: { not: id }
       }
@@ -118,9 +118,9 @@ class TagService {
 
     const tag = await prisma.tag.update({
       where: { id },
-      data: { 
+      data: {
         name,
-        color 
+        color
       },
     });
     this.notifier.notify("Tag Updated", tag);
@@ -133,6 +133,57 @@ class TagService {
     });
     this.notifier.notify("Tag Deleted", tag);
     return tag;
+  }
+
+  async addTagsToTask(taskId: number, tagIds: number[]) {
+    const task = await prisma.task.findUnique({
+      where: { id: taskId },
+    });
+
+    if (!task) {
+      throw { code: "TASK_NOT_FOUND", message: "Tarefa não encontrada" };
+    }
+
+    const tags = await prisma.tag.findMany({
+      where: { id: { in: tagIds } },
+    });
+
+    if (tags.length !== tagIds.length) {
+      throw { code: "TAG_NOT_FOUND", message: "Algumas tags não encontradas" };
+    }
+
+    await prisma.task.update({
+      where: { id: taskId },
+      data: {
+        Tag: {
+          connect: tags.map(tag => ({ id: tag.id })),
+        },
+      },
+    });
+    this.notifier.notify("Tags Added to Task", task);
+    return task;
+  }
+
+
+  async removeTagsFromTask(taskId: number, tagIds: number[]) {
+    const task = await prisma.task.findUnique({
+      where: { id: taskId },
+    });
+
+      if (!task) {  
+      throw { code: "TASK_NOT_FOUND", message: "Tarefa não encontrada" };
+    }
+
+    await prisma.task.update({
+      where: { id: taskId },
+      data: {
+        Tag: {
+          disconnect: tagIds.map(tagId => ({ id: tagId })),
+        },
+      },
+    });
+    this.notifier.notify("Tags Removed from Task", task);
+    return task;
   }
 }
 

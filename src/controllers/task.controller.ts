@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { createTaskSchema, updateTaskSchema } from "../validations/task.validation";
 import taskService from "../services/task.service";
+import historyService from "../services/history.service";
 import { validateId } from "../validations/config.validation";
 import { handleError } from "../utils/errorHandler";
 
@@ -22,6 +23,12 @@ class TaskController {
         responsibleId,
         status
       });
+
+      await historyService.create({
+        taskId: task.id,
+        action: "Tarefa criada"
+      });
+
       return res.status(201).json(task);
     } catch (error: any) {
       return handleError(res, error, "Erro ao criar a tarefa");
@@ -79,6 +86,12 @@ class TaskController {
         priorityId,
         status
       });
+
+      await historyService.create({
+        taskId: updatedTask.id,
+        action: "Tarefa atualizada"
+      });
+
       return res.json(updatedTask);
     } catch (error: any) {
       return handleError(res, error, "Erro ao atualizar a tarefa");
@@ -95,6 +108,12 @@ class TaskController {
       }
 
       await taskService.delete(Number(id));
+
+      await historyService.create({
+        taskId: Number(id),
+        action: "Tarefa deletada"
+      });
+
       return res.status(204).send();
     } catch (error) {
       return handleError(res, error as Error, "Erro ao deletar a tarefa");
@@ -112,6 +131,12 @@ class TaskController {
       }
 
       const updatedTask = await taskService.assignResponsible(Number(id), Number(responsibleId));
+
+      await historyService.create({
+        taskId: updatedTask.id,
+        action: "Responsável atribuído à tarefa"
+      });
+
       return res.json(updatedTask);
     } catch (error: any) {
       return handleError(res, error, "Erro ao atribuir responsável à tarefa");

@@ -8,12 +8,12 @@ datasource db {
 }
 
 model Priority {
-  id        Int       @id @default(autoincrement())
-  level     String    @unique
-  default   Boolean   @default(false)
+  id        Int      @id @default(autoincrement())
+  level     String   @unique
+  default   Boolean  @default(false)
   tasks     Task[]
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model User {
@@ -39,11 +39,12 @@ model Task {
   creator       User      @relation("CreatorTasks", fields: [creatorId], references: [id])
   responsibleId Int?
   responsible   User?     @relation("ResponsibleTasks", fields: [responsibleId], references: [id])
-  status        Status    @default(PENDENTE) 
+  status        Status    @default(PENDENTE)
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   Tag           Tag[]
   Comment       Comment[]
+  History       History[]
 }
 
 enum Status {
@@ -53,12 +54,12 @@ enum Status {
 }
 
 model Tag {
-  id        Int       @id @default(autoincrement())
-  name      String    @unique
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
   color     String
   tasks     Task[]
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Comment {
@@ -68,6 +69,15 @@ model Comment {
   task      Task     @relation(fields: [taskId], references: [id])
   authorId  Int
   author    User     @relation(fields: [authorId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model History {
+  id        Int      @id @default(autoincrement())
+  taskId    Int
+  task      Task     @relation(fields: [taskId], references: [id])
+  action    String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

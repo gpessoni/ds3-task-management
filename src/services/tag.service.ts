@@ -55,7 +55,8 @@ class TagService {
     this.notifier.addObserver(new Observer());
   }
 
-  async create(data: { name: string }) {
+  async create(data: { name: string, color: string }) {
+    console.log(data.name)
     const existingTag = await prisma.tag.findFirst({
       where: { name: data.name }
     });
@@ -66,7 +67,8 @@ class TagService {
 
     const tag = await prisma.tag.create({
       data: {
-        name: data.name
+        name: data.name,
+        color: data.color
       },
     });
     this.notifier.notify("Tag Created", tag);
@@ -102,7 +104,7 @@ class TagService {
     await command.execute();
   }
 
-  async update(id: number, name: string) {
+  async update(id: number, name: string, color: string) {
     const existingTag = await prisma.tag.findFirst({
       where: { 
         name,
@@ -116,7 +118,10 @@ class TagService {
 
     const tag = await prisma.tag.update({
       where: { id },
-      data: { name },
+      data: { 
+        name,
+        color 
+      },
     });
     this.notifier.notify("Tag Updated", tag);
     return tag;

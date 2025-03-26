@@ -44,6 +44,12 @@ const validateId = (id: string) => {
   
     return { error: null };
   };
+
+  const isValidHexColor = (color: string) => {
+    const hexColorRegex = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
+    return hexColorRegex.test(color);
+  };
   
-  export { validateId, validateUpdateBody };
+  
+  export { validateId, validateUpdateBody, isValidHexColor };
   

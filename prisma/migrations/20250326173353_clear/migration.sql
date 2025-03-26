@@ -1,16 +1,10 @@
-/*
-  Warnings:
-
-  - You are about to drop the `Sports` table. If the table is not empty, all the data it contains will be lost.
-
-*/
--- DropTable
-DROP TABLE "Sports";
-
 -- CreateTable
 CREATE TABLE "Priority" (
     "id" SERIAL NOT NULL,
     "level" TEXT NOT NULL,
+    "default" BOOLEAN NOT NULL DEFAULT false,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "Priority_pkey" PRIMARY KEY ("id")
 );
@@ -46,6 +40,9 @@ CREATE TABLE "Task" (
 CREATE TABLE "Tag" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
+    "color" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "Tag_pkey" PRIMARY KEY ("id")
 );

@@ -1,15 +1,15 @@
 import { Router } from "express";
 import tagController from "../controllers/tag.controller";
 import { checkTagExists } from "../middlewares/tag.middleware";
+import { isAuthenticated } from "../middlewares/user.middleware";
 
 const router = Router();
 
-router.post("/", tagController.create);
-router.get("/", tagController.getAll);
-router.get("/:id", checkTagExists, tagController.getById);
-router.put("/:id", checkTagExists, tagController.update);
-router.delete("/:id", checkTagExists, tagController.delete);
+router.post("/", isAuthenticated, tagController.create);
+router.get("/", isAuthenticated, tagController.getAll);
+router.get("/:id", isAuthenticated, checkTagExists, tagController.getById);
+router.put("/:id", isAuthenticated, checkTagExists, tagController.update);
+router.delete("/:id", isAuthenticated, checkTagExists, tagController.delete);
 
 export default router;
-
 
